@@ -24,3 +24,6 @@ etc
 login.jpg
 token
 logs
+.idea/
+.vscode/
+.DS_Store
