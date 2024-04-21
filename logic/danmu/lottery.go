@@ -2,29 +2,15 @@ package danmu
 
 import (
 	"fmt"
+	"github.com/xbclub/BilibiliDanmuRobot-Core/entity"
+	"github.com/xbclub/BilibiliDanmuRobot-Core/http"
+	"strconv"
+	"strings"
+
 	"github.com/xbclub/BilibiliDanmuRobot-Core/logic"
 	"github.com/xbclub/BilibiliDanmuRobot-Core/svc"
 	"github.com/zeromicro/go-zero/core/logx"
-	"strconv"
-	"strings"
 )
-
-// LotteryRequest 抽奖请求
-type LotteryRequest struct {
-	Msg      string `json:"msg"`
-	Uid      int64  `json:"uid"`
-	Username string `json:"username"`
-	RoomID   string `json:"room_id"`
-	Version  string `json:"version"`
-}
-
-// LotteryResponse 抽奖响应
-type LotteryResponse struct {
-	Code     int    `json:"code"`
-	Msg      string `json:"msg"`
-	GiftName string `json:"gift_name"`
-	Count    int    `json:"count"`
-}
 
 // DoLotteryProcess 执行抽奖
 func DoLotteryProcess(msg, uid, username, roomId string, svcCtx *svc.ServiceContext) {
@@ -48,28 +34,23 @@ func DoLotteryProcess(msg, uid, username, roomId string, svcCtx *svc.ServiceCont
 	}
 
 	// 请求抽奖
-	//req := &LotteryRequest{
-	//	Msg:      msg,
-	//	Uid:      id,
-	//	Username: username,
-	//	RoomID:   roomId,
-	//	Version:  "1.0",
-	//}
-
-	// TODO: 请求抽奖地址
-
-	resp := &LotteryResponse{
-		Code:     0,
-		Msg:      "抽奖成功",
-		GiftName: "测试礼物",
-		Count:    1,
+	req := &entity.LotteryRequest{
+		Msg:      msg,
+		Uid:      id,
+		Username: username,
+		RoomID:   roomId,
+		Version:  "1.0",
 	}
 
-	if resp.Count < 1 {
-		logic.PushToBulletSender(fmt.Sprintf("@%s, 很遗憾, 您未中奖", username))
+	// 请求抽奖地址
+	resp, err := http.GetLucky(url, req)
+	if err != nil {
+		logx.Error(err)
+		logic.PushToBulletSender("抽奖服务异常")
 		return
 	}
 
-	// 中奖
-	logic.PushToBulletSender(fmt.Sprintf("@%s, 恭喜您中奖, 获得%s", username, resp.GiftName))
+	logx.Infof("抽奖结果: %s", resp.Msg)
+	// 返回抽奖结果
+	logic.PushToBulletSender(fmt.Sprintf("@%s, %s", username, resp.Msg))
 }
