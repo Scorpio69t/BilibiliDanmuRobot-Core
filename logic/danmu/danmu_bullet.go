@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
+
 	"github.com/xbclub/BilibiliDanmuRobot-Core/entity"
 	"github.com/xbclub/BilibiliDanmuRobot-Core/svc"
 	"github.com/zeromicro/go-zero/core/logx"
-	"regexp"
 )
 
 var danmuHandler *DanmuLogic
@@ -57,7 +58,7 @@ func StartDanmuLogic(ctx context.Context, svcCtx *svc.ServiceContext) {
 				}
 				// 抽奖
 				if svcCtx.Config.LotteryEnable {
-					go DoLotteryProcess(danmumsg, uid, from[1].(string), from[2].(string), svcCtx)
+					go DoLotteryProcess(danmumsg, uid, from[1].(string), svcCtx)
 				}
 				// 主播指令控制
 				go DoCMDProcess(danmumsg, uid, svcCtx)

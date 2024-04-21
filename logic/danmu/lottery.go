@@ -14,7 +14,7 @@ import (
 )
 
 // DoLotteryProcess 执行抽奖
-func DoLotteryProcess(msg, uid, username, roomId string, svcCtx *svc.ServiceContext) {
+func DoLotteryProcess(msg, uid, username string, svcCtx *svc.ServiceContext) {
 	if strings.Compare(msg, "抽奖") != 0 {
 		return
 	}
