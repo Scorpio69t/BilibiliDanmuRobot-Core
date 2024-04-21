@@ -5,7 +5,7 @@ type LotteryRequest struct {
 	Msg      string `json:"msg"`
 	Uid      int64  `json:"uid"`
 	Username string `json:"username"`
-	RoomID   string `json:"room_id"`
+	RoomID   int64  `json:"room_id"`
 	Version  string `json:"version"`
 }
 

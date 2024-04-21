@@ -2,10 +2,11 @@ package danmu
 
 import (
 	"fmt"
-	"github.com/xbclub/BilibiliDanmuRobot-Core/entity"
-	"github.com/xbclub/BilibiliDanmuRobot-Core/http"
 	"strconv"
 	"strings"
+
+	"github.com/xbclub/BilibiliDanmuRobot-Core/entity"
+	"github.com/xbclub/BilibiliDanmuRobot-Core/http"
 
 	"github.com/xbclub/BilibiliDanmuRobot-Core/logic"
 	"github.com/xbclub/BilibiliDanmuRobot-Core/svc"
@@ -38,7 +39,7 @@ func DoLotteryProcess(msg, uid, username, roomId string, svcCtx *svc.ServiceCont
 		Msg:      msg,
 		Uid:      id,
 		Username: username,
-		RoomID:   roomId,
+		RoomID:   int64(svcCtx.Config.RoomId),
 		Version:  "1.0",
 	}
 
